@@ -32,6 +32,7 @@ class KissScrollAnim {
         entries.forEach(entry => {
             if (entry.intersectionRatio > this.ratio) {
                 entry.target.classList.remove('ksa-invisible');
+                entry.target.classList.addcd('ksa-active');
                 observer.unobserve(entry.target)
             }
         });
