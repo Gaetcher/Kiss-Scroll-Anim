@@ -16,7 +16,12 @@ class KissScrollAnim {
         this.observer = new IntersectionObserver(this.handleIntersect.bind(this), observerOptions);
         this.elements.forEach(element => {
             element.classList.add('ksa-invisible');
-            this.observer.observe(element);
+
+            if (element.dataset.ksaDelay) {
+                this.getDataOptions(element)
+            } else {
+                this.observer.observe(element);
+            }
         });
     }
 
@@ -26,6 +31,23 @@ class KissScrollAnim {
             rootMargin: this.options.rootMargin,
             threshold: this.options.ratio
         }
+    }
+
+    getDataOptions(element) {
+        let parsedDelay = Number.parseInt(element.dataset.ksaDelay, 10)
+        if (Number.isNaN(parsedDelay)) {
+            parsedDelay = 0
+        }
+        if (parsedDelay != 0) {
+            element.setAttribute('style', 'animation-delay:' + parsedDelay + 'ms;')
+            this.observeElement(element)
+        } else {
+            this.observeElement(element)
+        }
+    }
+
+    observeElement(element) {
+        this.observer.observe(element);
     }
 
     handleIntersect(entries, observer) {
